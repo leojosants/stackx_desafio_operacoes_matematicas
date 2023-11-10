@@ -34,7 +34,7 @@ public class App {
                     multiplication_result, division_result);
 
         } catch (NumberFormatException e) {
-            System.out.println("\n-> erro, esperado digito numérico ao invés de letras");
+            System.out.println("\n-> erro, esperado digito numérico ao invés de letras, reinicie o processo");
 
         } catch (ArithmeticException e) {
             System.out.println("\n-> erro, não é possível realizar divisão por zero");

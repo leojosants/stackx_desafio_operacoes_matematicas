@@ -107,7 +107,7 @@ public class App {
 
         name = name.replaceAll("[0-9]", "");
 
-        return name.toUpperCase();
+        return name.toUpperCase().replaceAll("\\s+", " ");
     }
 
     private static Integer requestAge(Scanner scanner) {

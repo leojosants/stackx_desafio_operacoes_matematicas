@@ -16,8 +16,6 @@ public class App {
 
             String email = requestEmail(scanner);
 
-            // validarEmail(email);
-
             String name = requestName(scanner);
             Integer age = requestAge(scanner);
 

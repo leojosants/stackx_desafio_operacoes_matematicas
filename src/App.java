@@ -3,8 +3,6 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.naming.directory.NoSuchAttributeException;
-
 public class App {
     public static void main(String[] args) throws Exception {
 
@@ -34,7 +32,10 @@ public class App {
 
             displayData(email, name, age, first_value, second_value, sum_result, substraction_result,
                     multiplication_result, division_result);
-                    
+
+        } catch (NumberFormatException e) {
+            System.out.println("\n-> erro, esperado digito numérico ao invés de letras");
+
         } catch (ArithmeticException e) {
             System.out.println("\n-> erro, não é possível realizar divisão por zero");
 
@@ -46,7 +47,7 @@ public class App {
 
         } finally {
             scanner.close();
-            System.out.println("-> fim do programa");
+            System.out.println("\n-> fim do programa");
         }
     }
 
@@ -61,25 +62,26 @@ public class App {
             email = scanner.nextLine().trim();
 
             while (email.isEmpty()) {
-                System.out.print("-> campo 'e-mail' não pode ser vazio, digite o e-mail novamente [usuario@email.com]: ");
+                System.out
+                        .print("-> campo 'e-mail' não pode ser vazio, digite o e-mail novamente [usuario@email.com]: ");
                 email = scanner.nextLine().trim();
             }
         } while ((email.isEmpty()));
 
-        while (validarEmail(email)) {
+        while (validateEmail(email)) {
             System.out.print("-> 'e-mail' inválido, digite o e-mail novamente [usuario@email.com]: ");
             email = scanner.nextLine().trim();
-            validarEmail(email);
+            validateEmail(email);
         }
 
         return email;
     }
 
-    private static boolean validarEmail(String email) throws Exception {
+    private static boolean validateEmail(String email) throws Exception {
         boolean isValid = false;
-        Pattern p = Pattern.compile("^[\\w-]+(\\.[\\w-]+)*@([\\w-]+\\.)+[a-zA-Z]{2,3}$");
-        Matcher m = p.matcher(email.trim());
-        isValid = (!m.find());
+        Pattern pattern = Pattern.compile("^[\\w-]+(\\.[\\w-]+)*@([\\w-]+\\.)+[a-zA-Z]{2,3}$");
+        Matcher matcher = pattern.matcher(email.trim());
+        isValid = (!matcher.find());
         return isValid;
     }
 
@@ -96,15 +98,34 @@ public class App {
             }
         } while (name.isEmpty());
 
-        return name;
+        name = name.replaceAll("[0-9]", "");
+
+        while (name.length() == 0) {
+            System.out.print("-> campo 'nome' não pode receber somente dígitos numéricos, digite o nome novamente: ");
+            name = scanner.nextLine().trim();
+        }
+
+        name = name.replaceAll("[0-9]", "");
+
+        return name.toUpperCase();
     }
 
     private static Integer requestAge(Scanner scanner) {
-        Integer age = 0;
+        String age_string;
+        Integer age;
 
         do {
             System.out.print("\nDigite a idade: ");
-            age = scanner.nextInt();
+            age_string = scanner.nextLine();
+
+            while (age_string.equals("")) {
+                System.out.print("-> campo 'idade' não pode ser vazio, digite a idade novamente: ");
+                age_string = scanner.nextLine();
+            }
+        } while (age_string.equals(""));
+
+        do {
+            age = Integer.parseInt(age_string);
 
             while (age < 0) {
                 System.out.print("-> campo 'idade' não pode ser menor que zero, digite a idade novamente: ");
